@@ -4,9 +4,11 @@ import { travelApi } from '../services/api';
 import { PlaceCard } from '../components/PlaceCard';
 import { Sparkles, Compass } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../components/AuthProvider';
 
 export function Dashboard() {
-  const USER_ID = "demo_user_123";
+  const { user } = useAuth();
+  const USER_ID = user?.uid || "demo_user_123";
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['recommendations', USER_ID],

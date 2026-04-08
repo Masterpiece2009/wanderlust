@@ -15,7 +15,7 @@ const MOCK_PLACES = [
     name: "Eiffel Tower",
     category: "Landmark",
     description: "Iconic iron lattice tower on the Champ de Mars in Paris.",
-    location: { city: "Paris", country: "France" },
+    location: { city: "Paris", country: "France", latitude: 48.8584, longitude: 2.2945 },
     average_rating: 4.8,
     tags: ["romantic", "views", "history"],
     image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80"
@@ -25,7 +25,7 @@ const MOCK_PLACES = [
     name: "Santorini Caldera",
     category: "Nature",
     description: "Stunning volcanic crater surrounded by white-washed villages.",
-    location: { city: "Santorini", country: "Greece" },
+    location: { city: "Santorini", country: "Greece", latitude: 36.3932, longitude: 25.4615 },
     average_rating: 4.9,
     tags: ["beach", "sunset", "romantic"],
     image: "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?auto=format&fit=crop&w=800&q=80"
@@ -35,7 +35,7 @@ const MOCK_PLACES = [
     name: "Kyoto Temples",
     category: "Culture",
     description: "Historic wooden temples and beautiful zen gardens.",
-    location: { city: "Kyoto", country: "Japan" },
+    location: { city: "Kyoto", country: "Japan", latitude: 35.0116, longitude: 135.7681 },
     average_rating: 4.7,
     tags: ["culture", "peaceful", "history"],
     image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80"
@@ -45,7 +45,7 @@ const MOCK_PLACES = [
     name: "Machu Picchu",
     category: "History",
     description: "Incan citadel set high in the Andes Mountains in Peru.",
-    location: { city: "Cusco Region", country: "Peru" },
+    location: { city: "Cusco Region", country: "Peru", latitude: -13.1631, longitude: -72.5450 },
     average_rating: 4.9,
     tags: ["history", "hiking", "mountains"],
     image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80"
@@ -55,7 +55,7 @@ const MOCK_PLACES = [
     name: "Banff National Park",
     category: "Nature",
     description: "Canada's oldest national park, known for its mountainous terrain and hot springs.",
-    location: { city: "Alberta", country: "Canada" },
+    location: { city: "Alberta", country: "Canada", latitude: 51.1784, longitude: -115.5708 },
     average_rating: 4.8,
     tags: ["nature", "hiking", "lakes"],
     image: "https://images.unsplash.com/photo-1561134643-66c39f196126?auto=format&fit=crop&w=800&q=80"

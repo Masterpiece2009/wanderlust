@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the Wanderlust app.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string", "format": "uri" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "UserPreferences": {
+      "title": "User Preferences",
+      "description": "Travel preferences for a user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "budget": { "type": "string", "enum": ["budget", "medium", "luxury"] },
+        "groupType": { "type": "string", "enum": ["solo", "couple", "family", "friends"] },
+        "accessibility": { "type": "array", "items": { "type": "string" } },
+        "categories": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "budget", "groupType", "categories"]
+    },
+    "Interaction": {
+      "title": "Interaction",
+      "description": "A user's interaction with a place (like or save).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "placeId": { "type": "string" },
+        "type": { "type": "string", "enum": ["like", "save"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "placeId", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores user profile information."
+    },
+    "/preferences/{userId}": {
+      "schema": { "$ref": "#/entities/UserPreferences" },
+      "description": "Stores user travel preferences."
+    },
+    "/interactions/{interactionId}": {
+      "schema": { "$ref": "#/entities/Interaction" },
+      "description": "Stores user interactions with places."
+    }
+  }
+}

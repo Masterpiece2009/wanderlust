@@ -1,6 +1,9 @@
-import React from 'react';
-import { Star, MapPin, Navigation } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, MapPin, Navigation, Heart, Bookmark } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from './AuthProvider';
+import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface PlaceCardProps {
   place: any;
@@ -8,7 +11,75 @@ interface PlaceCardProps {
 }
 
 export function PlaceCard({ place, matchScore }: PlaceCardProps) {
+  const { user } = useAuth();
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
   const imageUrl = place.image || `https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=800&q=80`;
+
+  useEffect(() => {
+    async function checkInteractions() {
+      if (!user || !place._id) return;
+      try {
+        const likeRef = doc(db, 'interactions', `${user.uid}_${place._id}_like`);
+        const saveRef = doc(db, 'interactions', `${user.uid}_${place._id}_save`);
+        
+        const [likeSnap, saveSnap] = await Promise.all([getDoc(likeRef), getDoc(saveRef)]);
+        
+        if (likeSnap.exists()) setIsLiked(true);
+        if (saveSnap.exists()) setIsSaved(true);
+      } catch (error) {
+        console.error("Error checking interactions:", error);
+      }
+    }
+    checkInteractions();
+  }, [user, place._id]);
+
+  const handleInteraction = async (type: 'like' | 'save', e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!user) {
+      alert(`Please sign in to ${type} places.`);
+      return;
+    }
+
+    const docId = `${user.uid}_${place._id}_${type}`;
+    const docRef = doc(db, 'interactions', docId);
+
+    try {
+      if (type === 'like') {
+        if (isLiked) {
+          await deleteDoc(docRef);
+          setIsLiked(false);
+        } else {
+          await setDoc(docRef, {
+            uid: user.uid,
+            placeId: place._id,
+            type: 'like',
+            timestamp: new Date().toISOString()
+          });
+          setIsLiked(true);
+        }
+      } else if (type === 'save') {
+        if (isSaved) {
+          await deleteDoc(docRef);
+          setIsSaved(false);
+        } else {
+          await setDoc(docRef, {
+            uid: user.uid,
+            placeId: place._id,
+            type: 'save',
+            timestamp: new Date().toISOString()
+          });
+          setIsSaved(true);
+        }
+      }
+    } catch (error) {
+      console.error(`Error handling ${type}:`, error);
+      alert(`Failed to ${type} place.`);
+    }
+  };
 
   return (
     <motion.div 
@@ -27,6 +98,28 @@ export function PlaceCard({ place, matchScore }: PlaceCardProps) {
           referrerPolicy="no-referrer"
         />
         
+        {/* Interactive Buttons */}
+        <div className="absolute top-4 left-4 z-20 flex gap-2">
+          <motion.button 
+            whileTap={{ scale: 0.8 }}
+            onClick={(e) => handleInteraction('like', e)}
+            className={`p-2.5 rounded-full backdrop-blur-md border transition-colors ${
+              isLiked ? 'bg-red-500/90 border-red-500 shadow-md' : 'bg-white/20 border-white/30 hover:bg-white/40'
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${isLiked ? 'fill-white text-white' : 'text-white'}`} />
+          </motion.button>
+          <motion.button 
+            whileTap={{ scale: 0.8 }}
+            onClick={(e) => handleInteraction('save', e)}
+            className={`p-2.5 rounded-full backdrop-blur-md border transition-colors ${
+              isSaved ? 'bg-teal-500/90 border-teal-500 shadow-md' : 'bg-white/20 border-white/30 hover:bg-white/40'
+            }`}
+          >
+            <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-white text-white' : 'text-white'}`} />
+          </motion.button>
+        </div>
+
         {matchScore && (
           <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-teal-700 shadow-sm flex items-center gap-1">
             <Star className="w-3 h-3 fill-teal-700" />

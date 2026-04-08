@@ -1,0 +1,93 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+    
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid;
+    }
+    
+    function uidNotModified() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == resource.data.uid;
+    }
+    
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidUser() {
+      return hasRequiredFields(['uid', 'email']) &&
+             request.resource.data.uid is string &&
+             request.resource.data.email is string;
+    }
+
+    function isValidPreferences() {
+      return hasRequiredFields(['uid', 'budget', 'groupType', 'categories']) &&
+             request.resource.data.uid is string &&
+             request.resource.data.budget in ['budget', 'medium', 'luxury'] &&
+             request.resource.data.groupType in ['solo', 'couple', 'family', 'friends'] &&
+             request.resource.data.categories is list;
+    }
+
+    function isValidInteraction() {
+      return hasRequiredFields(['uid', 'placeId', 'type', 'timestamp']) &&
+             request.resource.data.uid is string &&
+             request.resource.data.placeId is string &&
+             request.resource.data.type in ['like', 'save'] &&
+             request.resource.data.timestamp is string;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser() && uidUnchanged();
+      allow update: if isOwner(userId) && isValidUser() && uidNotModified();
+      allow delete: if isOwner(userId);
+    }
+
+    match /preferences/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidPreferences() && uidUnchanged();
+      allow update: if isOwner(userId) && isValidPreferences() && uidNotModified();
+      allow delete: if isOwner(userId);
+    }
+
+    match /interactions/{interactionId} {
+      allow read: if isAuthenticated() && interactionId.matches(request.auth.uid + '_.*');
+      allow create: if isAuthenticated() && 
+                    interactionId.matches(request.auth.uid + '_.*') &&
+                    request.resource.data.uid == request.auth.uid && 
+                    isValidInteraction() && 
+                    uidUnchanged();
+      allow update: if isAuthenticated() && 
+                    interactionId.matches(request.auth.uid + '_.*') &&
+                    request.auth.uid == resource.data.uid && 
+                    isValidInteraction() && 
+                    uidNotModified();
+      allow delete: if isAuthenticated() && 
+                    interactionId.matches(request.auth.uid + '_.*') &&
+                    request.auth.uid == resource.data.uid;
+    }
+  }
+}

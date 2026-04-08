@@ -9,6 +9,8 @@ import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Search } from './pages/Search';
 import { Roadmap } from './pages/Roadmap';
+import { Profile } from './pages/Profile';
+import { AuthProvider } from './components/AuthProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,16 +24,19 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="search" element={<Search />} />
-            <Route path="roadmap" element={<Roadmap />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="search" element={<Search />} />
+              <Route path="roadmap" element={<Roadmap />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

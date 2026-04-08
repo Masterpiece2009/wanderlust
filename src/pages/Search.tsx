@@ -4,9 +4,11 @@ import { Search as SearchIcon, Loader2, Compass } from 'lucide-react';
 import { travelApi } from '../services/api';
 import { PlaceCard } from '../components/PlaceCard';
 import { motion } from 'framer-motion';
+import { useAuth } from '../components/AuthProvider';
 
 export function Search() {
-  const USER_ID = "demo_user_123";
+  const { user } = useAuth();
+  const USER_ID = user?.uid || "demo_user_123";
   const [query, setQuery] = useState('');
   const [activeQuery, setActiveQuery] = useState('');
 

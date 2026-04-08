@@ -108,13 +108,13 @@ export function Profile() {
             <Wallet className="w-5 h-5 text-teal-500" />
             Travel Budget
           </h3>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {['budget', 'medium', 'luxury'].map((b) => (
               <button
                 key={b}
                 type="button"
                 onClick={() => setBudget(b)}
-                className={`p-4 rounded-2xl border-2 font-bold capitalize transition-all ${
+                className={`p-3 sm:p-4 rounded-2xl border-2 font-bold capitalize transition-all ${
                   budget === b 
                     ? 'border-teal-500 bg-teal-50 text-teal-700' 
                     : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200 hover:bg-slate-50'
@@ -132,13 +132,13 @@ export function Profile() {
             <Users className="w-5 h-5 text-teal-500" />
             Who are you traveling with?
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {['solo', 'couple', 'family', 'friends'].map((g) => (
               <button
                 key={g}
                 type="button"
                 onClick={() => setGroupType(g)}
-                className={`p-4 rounded-2xl border-2 font-bold capitalize transition-all ${
+                className={`p-3 sm:p-4 rounded-2xl border-2 font-bold capitalize transition-all ${
                   groupType === g 
                     ? 'border-teal-500 bg-teal-50 text-teal-700' 
                     : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200 hover:bg-slate-50'
@@ -156,13 +156,13 @@ export function Profile() {
             <Heart className="w-5 h-5 text-teal-500" />
             Favorite Categories
           </h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {['Nature', 'Culture', 'History', 'Landmark', 'Food', 'Adventure', 'Relaxation'].map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => toggleArrayItem(cat, categories, setCategories)}
-                className={`px-5 py-2.5 rounded-xl border-2 font-bold transition-all ${
+                className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl border-2 font-bold text-sm sm:text-base transition-all ${
                   categories.includes(cat)
                     ? 'border-teal-500 bg-teal-500 text-white' 
                     : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200 hover:bg-slate-50'
@@ -180,13 +180,13 @@ export function Profile() {
             <Accessibility className="w-5 h-5 text-teal-500" />
             Accessibility Needs
           </h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {['Wheelchair Accessible', 'Elevator', 'Visual Aids', 'Hearing Aids', 'Quiet Spaces'].map((acc) => (
               <button
                 key={acc}
                 type="button"
                 onClick={() => toggleArrayItem(acc, accessibility, setAccessibility)}
-                className={`px-5 py-2.5 rounded-xl border-2 font-bold transition-all ${
+                className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl border-2 font-bold text-sm sm:text-base transition-all ${
                   accessibility.includes(acc)
                     ? 'border-teal-500 bg-teal-50 text-teal-700' 
                     : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200 hover:bg-slate-50'

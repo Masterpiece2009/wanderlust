@@ -107,13 +107,13 @@ export function Roadmap() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column: Timeline */}
           <div className="relative">
-            <div className="absolute left-[47px] top-10 bottom-10 w-1 bg-gradient-to-b from-teal-200 via-teal-400 to-teal-200 rounded-full opacity-50"></div>
+            <div className="absolute left-[31px] sm:left-[47px] top-10 bottom-10 w-1 bg-gradient-to-b from-teal-200 via-teal-400 to-teal-200 rounded-full opacity-50"></div>
 
             <motion.div 
               variants={container}
               initial="hidden"
               animate="show"
-              className="space-y-10"
+              className="space-y-8 sm:space-y-10"
             >
               {stops.map((stop: any, idx: number) => {
                 const place = stop.place;
@@ -121,12 +121,12 @@ export function Roadmap() {
                 const imageUrl = place.image || `https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=800&q=80`;
 
                 return (
-                  <motion.div key={place._id || idx} variants={item} className="relative flex gap-8 group">
+                  <motion.div key={place._id || idx} variants={item} className="relative flex gap-4 sm:gap-8 group">
                     {/* Timeline Node */}
                     <div className="relative z-10 flex flex-col items-center mt-2">
                       <motion.div 
                         whileHover={{ scale: 1.1, rotate: 5 }}
-                        className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-teal-100 flex-shrink-0 relative"
+                        className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-teal-100 flex-shrink-0 relative"
                       >
                         <img 
                           src={imageUrl} 
@@ -136,7 +136,7 @@ export function Roadmap() {
                         />
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
                       </motion.div>
-                      <div className="absolute -bottom-4 bg-teal-600 text-white text-sm font-bold px-3 py-1 rounded-full border-2 border-white shadow-sm">
+                      <div className="absolute -bottom-3 sm:-bottom-4 bg-teal-600 text-white text-[10px] sm:text-sm font-bold px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 border-white shadow-sm whitespace-nowrap">
                         Stop {idx + 1}
                       </div>
                     </div>
@@ -145,36 +145,36 @@ export function Roadmap() {
                     <motion.div 
                       whileHover={{ x: 8 }}
                       transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                      className="flex-1 bg-white/80 backdrop-blur-xl rounded-3xl border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all"
+                      className="flex-1 bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-4 sm:p-8 group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all"
                     >
-                      <div className="flex justify-between items-start mb-4">
+                      <div className="flex flex-col sm:flex-row justify-between items-start mb-3 sm:mb-4 gap-2">
                         <div>
-                          <h3 className="text-2xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">{place.name}</h3>
-                          <p className="text-slate-500 flex items-center gap-1.5 mt-2 font-medium">
-                            <Navigation className="w-4 h-4 text-teal-500" />
-                            {place.location?.city}, {place.location?.country}
+                          <h3 className="text-lg sm:text-2xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">{place.name}</h3>
+                          <p className="text-slate-500 flex items-center gap-1.5 mt-1 sm:mt-2 text-xs sm:text-sm font-medium">
+                            <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-500 shrink-0" />
+                            <span className="truncate">{place.location?.city}, {place.location?.country}</span>
                           </p>
                         </div>
-                        <span className="px-4 py-1.5 bg-teal-50 text-teal-700 rounded-xl text-sm font-bold border border-teal-100">
+                        <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-teal-50 text-teal-700 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-bold border border-teal-100 shrink-0">
                           {place.category || 'Destination'}
                         </span>
                       </div>
 
-                      <p className="text-slate-600 mb-8 leading-relaxed text-lg">
+                      <p className="text-slate-600 mb-4 sm:mb-8 leading-relaxed text-xs sm:text-lg line-clamp-3 sm:line-clamp-none">
                         {place.description}
                       </p>
 
-                      <div className="flex items-center gap-6 text-sm text-slate-500 border-t border-slate-100 pt-5">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 text-xs sm:text-sm text-slate-500 border-t border-slate-100 pt-3 sm:pt-5">
                         {place.appropriate_time && place.appropriate_time.length > 0 && (
-                          <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg font-medium">
-                            <Calendar className="w-4 h-4 text-slate-400" />
-                            <span>Best in: {place.appropriate_time.slice(0, 2).join(', ')}</span>
+                          <div className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium">
+                            <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 shrink-0" />
+                            <span className="truncate">Best in: {place.appropriate_time.slice(0, 2).join(', ')}</span>
                           </div>
                         )}
                         {stop.next_destination && !isLast && (
-                          <div className="flex items-center gap-2 text-teal-600 font-bold ml-auto bg-teal-50 px-4 py-1.5 rounded-lg">
-                            <Clock className="w-4 h-4" />
-                            <span>Next: {stop.next_destination}</span>
+                          <div className="flex items-center gap-1.5 sm:gap-2 text-teal-600 font-bold sm:ml-auto bg-teal-50 px-3 sm:px-4 py-1 sm:py-1.5 rounded-lg w-full sm:w-auto">
+                            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                            <span className="truncate">Next: {stop.next_destination}</span>
                           </div>
                         )}
                       </div>

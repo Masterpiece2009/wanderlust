@@ -87,7 +87,7 @@ export function PlaceCard({ place, matchScore }: PlaceCardProps) {
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="group relative bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col h-full"
     >
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-48 sm:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 z-10" />
         <motion.img 
           whileHover={{ scale: 1.05 }}
@@ -121,42 +121,42 @@ export function PlaceCard({ place, matchScore }: PlaceCardProps) {
         </div>
 
         {matchScore && (
-          <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-teal-700 shadow-sm flex items-center gap-1">
+          <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold text-teal-700 shadow-sm flex items-center gap-1">
             <Star className="w-3 h-3 fill-teal-700" />
             {Math.round(matchScore * 100)}% Match
           </div>
         )}
         
         <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2">
-          <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white border border-white/30">
+          <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium text-white border border-white/30">
             {place.category || 'Destination'}
           </div>
         </div>
       </div>
       
-      <div className="p-6 flex flex-col flex-1">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="text-xl font-bold text-slate-900 line-clamp-1 group-hover:text-teal-600 transition-colors">
+      <div className="p-5 sm:p-6 flex flex-col flex-1">
+        <div className="flex justify-between items-start mb-3 gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 line-clamp-1 group-hover:text-teal-600 transition-colors">
             {place.name}
           </h3>
-          <div className="flex items-center gap-1 text-amber-500 bg-amber-50 px-2 py-1 rounded-lg text-sm font-bold">
-            <Star className="w-4 h-4 fill-current" />
+          <div className="flex items-center gap-1 text-amber-500 bg-amber-50 px-2 py-1 rounded-lg text-xs sm:text-sm font-bold shrink-0">
+            <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
             {place.average_rating ? place.average_rating.toFixed(1) : 'New'}
           </div>
         </div>
         
-        <div className="flex items-center gap-1.5 text-slate-500 text-sm mb-4 font-medium">
-          <MapPin className="w-4 h-4 text-teal-500" />
-          <span>{place.location?.city}, {place.location?.country}</span>
+        <div className="flex items-center gap-1.5 text-slate-500 text-xs sm:text-sm mb-3 sm:mb-4 font-medium">
+          <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-500 shrink-0" />
+          <span className="truncate">{place.location?.city}, {place.location?.country}</span>
         </div>
         
-        <p className="text-slate-600 text-sm line-clamp-2 mb-6 flex-1 leading-relaxed">
+        <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 mb-4 sm:mb-6 flex-1 leading-relaxed">
           {place.description}
         </p>
         
-        <div className="flex flex-wrap gap-2 mt-auto">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-auto">
           {place.tags?.slice(0, 3).map((tag: string) => (
-            <span key={tag} className="px-3 py-1 bg-slate-100/80 text-slate-600 rounded-lg text-xs font-semibold border border-slate-200/50">
+            <span key={tag} className="px-2.5 py-1 bg-slate-100/80 text-slate-600 rounded-lg text-[10px] sm:text-xs font-semibold border border-slate-200/50">
               {tag}
             </span>
           ))}

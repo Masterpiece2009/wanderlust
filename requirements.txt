@@ -2,10 +2,4 @@ fastapi>=0.110.0
 uvicorn==0.24.0
 pymongo==4.6.0
 motor==3.3.2
-spacy>=3.7.4,<3.8.0
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz
-scikit-learn>=1.4.2
-geopy==2.4.1
-langdetect==1.0.9
-deep-translator==1.11.4
 pydantic>=2.9.2

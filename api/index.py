@@ -20,38 +20,6 @@ from pymongo import MongoClient
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Dummy NLP for fallback
-class DummyNLP:
-    def __init__(self):
-        self.name = "DummyNLP-Fallback"
-        self.vocab = type('obj', (object,), {'vectors': type('obj', (object,), {'n_keys': 0})})
-        
-    def __call__(self, text):
-        class DummyDoc:
-            def __init__(self, text):
-                self.text = text
-                self.vector = [0] * 300
-                self.vector_norm = 0
-            def similarity(self, other):
-                words1 = set(self.text.lower().split())
-                words2 = set(other.text.lower().split())
-                if not words1 or not words2: return 0
-                return len(words1.intersection(words2)) / len(words1.union(words2))
-        return DummyDoc(text)
-
-# Try to load real NLP and translation
-try:
-    import spacy
-    from sklearn.preprocessing import MinMaxScaler
-    from geopy.distance import geodesic
-    from langdetect import detect
-    from deep_translator import GoogleTranslator
-    import copy
-    import re
-    import hashlib
-except ImportError as e:
-    logger.error(f"Missing dependencies: {e}")
-
 # --- Database Connection ---
 def connect_mongo(uri, retries=3):
     last_error = None
@@ -126,18 +94,6 @@ class TaskManager:
         background_tasks.add_task(wrapped_task)
 
 task_manager = TaskManager()
-
-# --- NLP Initialization ---
-def load_spacy_model(model="en_core_web_sm", retries=1):
-    logger.info(f"Attempting to load spaCy model: {model}")
-    try:
-        nlp = spacy.load(model)
-        return nlp
-    except Exception as e:
-        logger.warning(f"Could not load spacy model {model}: {e}. Using DummyNLP.")
-        return DummyNLP()
-
-nlp = load_spacy_model()
 
 # --- Models ---
 class RecommendationRequest(BaseModel):
